@@ -16,6 +16,6 @@ public class TopicosController {
     public List<TopicoDto> lista() {
         Topico topico = new Topico("Dúvida", "Duvida conteudo", new Curso("Sring", "Programação"));
 
-        return Arrays.asList(topico, topico, topico);
+        return TopicoDto.converter(Arrays.asList(topico, topico, topico));
     }
 }
