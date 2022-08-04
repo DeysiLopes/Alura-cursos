@@ -1,4 +1,4 @@
-package br.com.alura.forum.modelo;
+package com.alura.babySteps.modelo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
