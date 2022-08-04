@@ -8,7 +8,6 @@ public class BabyStepsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BabyStepsApplication.class, args);
-		System.out.println("Oii gata");
 	}
 
 }
