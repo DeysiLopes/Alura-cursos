@@ -6,8 +6,12 @@ import com.alura.babySteps.modelo.Topico;
 import com.alura.babySteps.repository.CursoRepository;
 import com.alura.babySteps.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,9 +24,12 @@ public class TopicosController {
     private CursoRepository cursoRepository;
 
     @PostMapping
-    public void cadastrar(@RequestBody TopicoForm form) {
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
         Topico topico = form.converter(cursoRepository);
         topicoRepository.save(topico);
+
+        URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+        return ResponseEntity.created(uri).body(new TopicoDto(topico));
     }
 
     @GetMapping

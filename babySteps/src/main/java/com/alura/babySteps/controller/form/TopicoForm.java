@@ -3,10 +3,23 @@ package com.alura.babySteps.controller.form;
 import com.alura.babySteps.modelo.Curso;
 import com.alura.babySteps.modelo.Topico;
 import com.alura.babySteps.repository.CursoRepository;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 public class TopicoForm {
+    @NotNull
+    @NotEmpty
+    @Length(min = 5)
     private String titulo;
+    @NotNull
+    @NotEmpty
+    @Length(min = 5)
     private String mensagem;
+    @NotNull
+    @NotEmpty
     private String nomeCurso;
 
     public String getTitulo() {
