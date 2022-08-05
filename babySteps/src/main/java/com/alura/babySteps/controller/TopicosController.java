@@ -1,5 +1,6 @@
 package com.alura.babySteps.controller;
 
+import com.alura.babySteps.controller.dto.DetalhesTopicoDto;
 import com.alura.babySteps.controller.dto.TopicoDto;
 import com.alura.babySteps.controller.form.TopicoForm;
 import com.alura.babySteps.modelo.Topico;
@@ -42,4 +43,12 @@ public class TopicosController {
             return TopicoDto.converter(topicos);
         }
     }
+
+    @GetMapping("/{id}")
+    public DetalhesTopicoDto detalhar(@PathVariable Long id) {
+        Topico topico = topicoRepository.getReferenceById(id);
+        return new DetalhesTopicoDto(topico);
+    }
+
+    
 }
