@@ -1,5 +1,7 @@
 package com.alura.babySteps.controller.form;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 public class LoginForm {
 
     private String email;
@@ -19,5 +21,10 @@ public class LoginForm {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+
+    public UsernamePasswordAuthenticationToken converter() {
+        return new UsernamePasswordAuthenticationToken(email, senha);
     }
 }
