@@ -1,5 +1,9 @@
 package com.alura.babySteps.config.security;
 
+import com.alura.babySteps.modelo.Usuario;
+import com.alura.babySteps.repository.UsuarioRepository;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,8 +16,11 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
 
-    public AutenticacaoViaTokenFilter(TokenService tokenService) {
+    private final UsuarioRepository usuarioRepository;
+
+    public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -21,8 +28,18 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
         String token = recuperarToken(request);
         boolean valido = tokenService.isValidToken(token);
-        System.out.println(valido);
+        if (valido) {
+            autenticarCliente(token);
+        }
+
         filterChain.doFilter(request, response);
+    }
+
+    private void autenticarCliente(String token) {
+        Long idUsuario = tokenService.getIdUsuario(token);
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String recuperarToken(HttpServletRequest request) {
