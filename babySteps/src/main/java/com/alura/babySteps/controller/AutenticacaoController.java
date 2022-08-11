@@ -1,6 +1,7 @@
 package com.alura.babySteps.controller;
 
 import com.alura.babySteps.config.security.TokenService;
+import com.alura.babySteps.controller.dto.TokenDto;
 import com.alura.babySteps.controller.form.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +27,12 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm loginForm) {
+    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm loginForm) {
         UsernamePasswordAuthenticationToken dadosLogin = loginForm.converter();
         try {
             Authentication authentication = authenticationManager.authenticate(dadosLogin);
             String token = tokenService.gerarToken(authentication);
-            System.out.println(token);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().build();
         }
