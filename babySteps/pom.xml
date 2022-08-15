@@ -99,6 +99,7 @@
     </dependencies>
 
     <build>
+        <finalName>BabySteps</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
