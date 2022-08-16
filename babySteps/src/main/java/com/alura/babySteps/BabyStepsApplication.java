@@ -2,22 +2,16 @@ package com.alura.babySteps;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @SpringBootApplication
 @EnableSpringDataWebSupport
 @EnableCaching
-public class BabyStepsApplication extends SpringBootServletInitializer {
+public class BabyStepsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BabyStepsApplication.class, args);
     }
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(BabyStepsApplication.class);
-    }
 }

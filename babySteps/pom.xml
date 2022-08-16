@@ -13,7 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>babySteps</name>
     <description>Construção de uma API com Alura</description>
-    <packaging>war</packaging>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -90,12 +89,6 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.7.1</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
