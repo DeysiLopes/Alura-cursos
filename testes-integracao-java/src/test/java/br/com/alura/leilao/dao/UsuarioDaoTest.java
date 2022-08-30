@@ -3,6 +3,8 @@ package br.com.alura.leilao.dao;
 import br.com.alura.leilao.model.Usuario;
 import br.com.alura.leilao.utils.JPAUtil;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
@@ -11,30 +13,43 @@ import javax.persistence.NoResultException;
 class UsuarioDaoTest {
 
     private UsuarioDao usuarioDao;
+    private EntityManager em;
+
+    @BeforeEach
+    public void beforeEach(){
+        this.em = JPAUtil.getEntityManager();
+        this.usuarioDao = new UsuarioDao(em);
+        em.getTransaction().begin();
+    }
+    @AfterEach
+    public void afterEach(){
+        em.getTransaction().rollback();
+    }
 
     @Test
     void deveriaBuscaDeUusuarioCadastrado(){
-        EntityManager em = JPAUtil.getEntityManager();
-        this.usuarioDao = new UsuarioDao(em);
-
-        Usuario usuario = new Usuario("fulano", "fulano@email.com", "123456");
-        em.getTransaction().begin();
-        em.persist(usuario);
-        em.getTransaction().commit();
+        Usuario usuario = criarUsuario();
 
         Usuario encontrado = this.usuarioDao.buscarPorUsername(usuario.getNome());
         Assert.assertNotNull(encontrado);
     }
     @Test
     void naoDeveriaBuscaDeUusuarioNaoCadastrado(){
-        EntityManager em = JPAUtil.getEntityManager();
-        this.usuarioDao = new UsuarioDao(em);
-
-        Usuario usuario = new Usuario("fulano", "fulano@email.com", "123456");
-        em.getTransaction().begin();
-        em.persist(usuario);
-        em.getTransaction().commit();
-
+        criarUsuario();
         Assert.assertThrows(NoResultException.class, () -> this.usuarioDao.buscarPorUsername("beltrano"));
+    }
+
+    @Test
+    void deveriaRemoverUmUsuario(){
+       Usuario usuario = criarUsuario();
+       usuarioDao.deletar(usuario);
+
+        Assert.assertThrows(NoResultException.class, () -> this.usuarioDao.buscarPorUsername(usuario.getNome()));
+    }
+
+    private Usuario criarUsuario(){
+        Usuario usuario = new Usuario("fulano", "fulano@email.com", "123456");
+        em.persist(usuario);
+         return usuario;
     }
 }
