@@ -3,13 +3,14 @@ package br.com.alura.leilao.dao;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.model.Usuario;
 import br.com.alura.leilao.utils.JPAUtil;
+import br.com.alura.leilao.utils.builder.LeilaoBuilder;
+import br.com.alura.leilao.utils.builder.UsuarioBuilder;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -31,8 +32,18 @@ class LeilaoDaoTest {
 
     @Test
    void deveriaCadastrarUmLeilao(){
-        Usuario usuario = criarUsuario();
-        Leilao leilao = new Leilao("mochila", new BigDecimal("70"), LocalDate.now(), usuario);
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("fulano")
+                .comEmail("fulano@email.com")
+                .comSenha("123456")
+                .criar();
+        em.persist(usuario);
+        Leilao leilao = new LeilaoBuilder()
+                .comNome("Mochila")
+                .comValorInicial("400")
+                .comData(LocalDate.now())
+                .comUsuario(usuario)
+                .criar();
 
         leilao = leilaoDao.salvar(leilao);
         Leilao salvo = leilaoDao.buscarPorId(leilao.getId());
@@ -41,8 +52,18 @@ class LeilaoDaoTest {
 
     @Test
     void deveriaAtualizarUmLeilao(){
-        Usuario usuario = criarUsuario();
-        Leilao leilao = new Leilao("mochila", new BigDecimal("70"), LocalDate.now(), usuario);
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("fulano")
+                .comEmail("fulano@email.com")
+                .comSenha("123456")
+                .criar();
+        em.persist(usuario);
+        Leilao leilao = new LeilaoBuilder()
+                .comNome("Mochila")
+                .comValorInicial("400")
+                .comData(LocalDate.now())
+                .comUsuario(usuario)
+                .criar();
 
         leilao = leilaoDao.salvar(leilao);
         leilao.setNome("Celular");
